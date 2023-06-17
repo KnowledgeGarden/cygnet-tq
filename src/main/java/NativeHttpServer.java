@@ -6,19 +6,21 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpServer;
-import org.springframework.boot.CommandLineRunner;
 
 
-public class NativeHttpServer implements CommandLineRunner
+public class NativeHttpServer 
 {
     private HttpServer server;
-    private final int port = 9080;
+    private static final int port = 9080;
 
     public NativeHttpServer() throws Exception
     {
         server = HttpServer.create(new InetSocketAddress(port), 0);
     }
     
+    private void start() {
+    	server.start();
+    }
     private void initializeRoutine() throws Exception
     {
         server.setExecutor(Executors.newFixedThreadPool(8));
@@ -26,13 +28,17 @@ public class NativeHttpServer implements CommandLineRunner
         CoreNLPWrapper.initialize();
     }
     
-    @Override
-    public void run(String... strings) throws Exception
+    public static void main (String [] strings) 
     {
         System.out.println("Beging server initialization...");
-        initializeRoutine();
         System.out.println("Initialization sequence complete. Server up and running");
         System.out.println("Browse to http://localhost:"+port);
-        server.start();
+        try {
+        	NativeHttpServer app = new NativeHttpServer();
+        	app.initializeRoutine();
+        	app.start();
+        } catch (Exception e) {
+        	throw new RuntimeException(e);
+        }
     }
 }

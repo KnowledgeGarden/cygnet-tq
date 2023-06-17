@@ -75,7 +75,7 @@ public class CoreNLPWrapper
 
     public Map<String, String> headers()
     {
-        ArrayMap<String,String> map = new ArrayMap<>();
+        ArrayMap<String,String> map = new ArrayMap<String, String>();
         map.put("ContentType", "application/xhtml+xml");
         return map;
     }
